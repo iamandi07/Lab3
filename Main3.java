@@ -21,6 +21,6 @@ public class Main3 {
         TransactionService transactionService = new TransactionService(transactionRepository);
 
         Console3 console = new Console3(carService, cardService, transactionService);
-        console.run();
+        console.allInOneInput();
     }
 }
