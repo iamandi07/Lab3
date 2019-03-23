@@ -11,31 +11,22 @@ import Service.TransactionService;
 import java.util.*;
 
 public class Console {
-    private CarService service;
-    private CardService service1;
-    private TransactionService service2;
+    private CarService carservice;
+    private CardService cardservice;
+    private TransactionService transactionservice;
     private Scanner scanner;
 
-    public Console(CarService service) {
-        this.service = service;
-        scanner = new Scanner(System.in);
-    }
-
-    public Console(CardService service1) {
-        this.service1 = service1;
-        scanner = new Scanner(System.in);
-    }
-
-    public Console(TransactionService service2) {
-        this.service2 = service2;
-        scanner = new Scanner(System.in);
+    public Console(CarService carservice, CardService cardservice, TransactionService transactionservice) {
+        this.carservice = carservice;
+        this.cardservice = cardservice;
+        this.transactionservice = transactionservice;
+        this.scanner = new Scanner(System.in);
     }
 
     private void showMenu() {
-        System.out.println("1. Intrare in service a masini");
-        System.out.println("2. Intrare in service a cardului de client");
-        System.out.println("3. Intrare in service a transactiilor");
-        System.out.println("4. Afisare toate");
+        System.out.println("1. Crud Masina");
+        System.out.println("2. Crud Card");
+        System.out.println("3. Crud Transaction");
         System.out.println("x. Iesire");
     }
 
@@ -44,99 +35,228 @@ public class Console {
         while (true) {
             showMenu();
             String option = scanner.nextLine();
-            if (option.equals("1")) {
-                handleServiceEntryCar();
-            } else if (option.equals(("2"))) {
-                handleServiceEntryCard();
-            } else if (option.equals(("3"))) {
-                handleServiceEntryTransaction();
-            } if (option.equals("4")) {
-                handleShowAll();
-            } else if (option.equals("x")) {
-                break;
+            switch (option){
+                case "1":
+                    runCarCrud();
+                    break;
+                case "2":
+                    runCardCrud();
+                    break;
+                case "3":
+                    runTransactionCrud();
+                    break;
+                case "x":
+                    return;
+                default:
+                    System.out.println("Alegere gresita");
+                    break;
             }
         }
     }
 
-    private void handleShowAll() {
-        for (Car c : service.getAll())
-            System.out.println(c);
-        for (Card d : service1.getAll())
-            System.out.println(d);
-        for (Transaction e : service2.getAll())
-            System.out.println(e);
+    private void runCarCrud() {
+        while (true) {
+            System.out.println("1. Add or update a car");
+            System.out.println("2. Remove a car");
+            System.out.println("3. View all cars");
+            System.out.println("4. Back");
+
+            String option = scanner.nextLine();
+            switch (option) {
+                case "1":
+                    handleAddUpdateCar();
+                    break;
+                case "2":
+                    handleRemoveCar();
+                    break;
+                case "3":
+                    handleViewCar();
+                    break;
+                case "4":
+                    return;
+                default:
+                    System.out.println("Invalid option!");
+                    break;
+            }
+        }
     }
 
-    private void handleServiceEntryCar() {
+    private void handleViewCar() {
+        for (Car car : carservice.getAll()) {
+            System.out.println(car);
+        }
+    }
+    private void handleAddUpdateCar() {
 
         try {
-            System.out.println("Dati id-ul: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati data de achizitie: ");
-            int date = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati distanta parcursa: ");
+            System.out.print("Enter id: ");
+            String id = scanner.nextLine();
+            System.out.print("Enter date : ");
+            String date = scanner.nextLine();
+            System.out.print("Enter the distance: ");
             int distance = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati modelul: ");
+            System.out.print("Enter the model: ");
             String model = scanner.nextLine();
-            System.out.println("E in garantie? asteptam ca un raspuns yes sau no: ");
-            boolean waranty = Boolean.parseBoolean(scanner.nextLine());
+            System.out.print("Enter if the car is in warranty (true / false): ");
+            boolean warranty = Boolean.parseBoolean(scanner.nextLine());
 
-            service.EnterServiceCar(id, date, distance, model, waranty);
-        } catch (RuntimeException runtimeException) {
-            System.out.println("Avem erori: " + runtimeException.getMessage());
+            carservice.AddAndUpdate(id, date, distance, model, warranty);
+
+            System.out.println("Car added!");
+        } catch (Exception ex) {
+            System.out.println("Errors:\n" + ex.getMessage());
         }
     }
 
-    private void handleServiceEntryCard() {
-
+    private void handleRemoveCar() {
         try {
-            System.out.println("Dati id-ul: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati CNP: ");
-            int cnp = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati data nasteri: ");
-            int bdate = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati data inregistrari: ");
-            int rdate = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati modelul: ");
-            String model = scanner.nextLine();
-            System.out.println("Dati numele: ");
-            String fname = scanner.nextLine();
-            System.out.println("Dati prenumele: ");
-            String lname = scanner.nextLine();
+            System.out.print("Enter the id to remove:");
+            String id = scanner.nextLine();
+            carservice.Remove(id);
 
-            service1.EnterServiceCard(id, cnp, bdate, rdate, model, fname, lname);
-        } catch (RuntimeException runtimeException) {
-            System.out.println("Avem erori: " + runtimeException.getMessage());
+            System.out.println("Cake removed!");
+        } catch (Exception ex) {
+            System.out.println("Errors:\n" + ex.getMessage());
         }
     }
 
-    private void handleServiceEntryTransaction() {
+    private void runCardCrud() {
+        while (true) {
+            System.out.println("1. Add or update a card");
+            System.out.println("2. Remove a card");
+            System.out.println("3. View all card");
+            System.out.println("4. Back");
+
+            String option = scanner.nextLine();
+            switch (option) {
+                case "1":
+                    handleAddUpdateCard();
+                    break;
+                case "2":
+                    handleRemoveCard();
+                    break;
+                case "3":
+                    handleViewCard();
+                    break;
+                case "4":
+                    return;
+                default:
+                    System.out.println("Invalid option!");
+                    break;
+            }
+        }
+    }
+
+    private void handleViewCard() {
+        for (Card card : cardservice.getAll()) {
+            System.out.println(card);
+        }
+    }
+    private void handleAddUpdateCard() {
 
         try {
-            System.out.println("Dati id-ul: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati id-ul masini: ");
-            int icc = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati suma pieselor: ");
-            int piecesum = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati data cumparari: ");
-            int date = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati ora cumparari: ");
-            int hour = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati suma manoperei: ");
-            double sumservice = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati ID-ul masini: ");
+            System.out.print("Enter id: ");
+            String id = scanner.nextLine();
+            System.out.print("Enter cnp ");
+            String cnp = scanner.nextLine();
+            System.out.print("Enter the birthdate: ");
+            String bdate = scanner.nextLine();
+            System.out.print("Enter the registration date : ");
+            String rdate = scanner.nextLine();
+            System.out.print("Enter if the car is in warranty (true / false): ");
+            boolean warranty = Boolean.parseBoolean(scanner.nextLine());
+
+            cardservice.AddAndUpdate(id, cnp, bdate, rdate);
+
+            System.out.println("Car added!");
+        } catch (Exception ex) {
+            System.out.println("Errors:\n" + ex.getMessage());
+        }
+    }
+
+    private void handleRemoveCard() {
+        try {
+            System.out.print("Enter the id to remove:");
+            String id = scanner.nextLine();
+            cardservice.Remove(id);
+
+            System.out.println("Card removed!");
+        } catch (Exception ex) {
+            System.out.println("Errors:\n" + ex.getMessage());
+        }
+    }
+
+    private void runTransactionCrud() {
+        while (true) {
+            System.out.println("1. Add or update a transaction");
+            System.out.println("2. Remove a transaction");
+            System.out.println("3. View all transaction");
+            System.out.println("4. Back");
+
+            String option = scanner.nextLine();
+            switch (option) {
+                case "1":
+                    handleAddUpdateTransaction();
+                    break;
+                case "2":
+                    handleRemoveTransaction();
+                    break;
+                case "3":
+                    handleViewTransaction();
+                    break;
+                case "4":
+                    return;
+                default:
+                    System.out.println("Invalid option!");
+                    break;
+            }
+        }
+    }
+
+    private void handleViewTransaction() {
+        for (Transaction transaction : transactionservice.getAll()) {
+            System.out.println(transaction);
+        }
+    }
+    private void handleAddUpdateTransaction() {
+
+        try {
+            System.out.print("Enter id: ");
+            String id = scanner.nextLine();
+            System.out.print("Enter card id: ");
+            String icc = scanner.nextLine();
+            System.out.print("Enter the registration date : ");
+            String date = scanner.nextLine();
+            System.out.print("Enter the registration hour : ");
+            String hour = scanner.nextLine();
+            System.out.print("Enter the car id : ");
             String cid = scanner.nextLine();
-            System.out.println("E in garantie? asteptam ca un raspuns yes sau no: ");
-            boolean waranty = Boolean.parseBoolean(scanner.nextLine());
-            System.out.println("Aveti card de client? asteptam ca un raspuns yes sau no: ");
+            System.out.print("Enter the price of the piece: ");
+            int piecesum = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter the price of the service: ");
+            double sumservice = Double.parseDouble(scanner.nextLine());
+            System.out.print("Enter if the car is in warranty (true / false): ");
             boolean clientcard = Boolean.parseBoolean(scanner.nextLine());
+            System.out.print("Enter if the car is in warranty (true / false): ");
+            boolean warranty = Boolean.parseBoolean(scanner.nextLine());
 
+            transactionservice.AddAndUpdate(id, icc, date, hour, cid, piecesum, sumservice, clientcard, warranty);
 
-            service2.EnterServiceTransaction(id, icc, piecesum, date, hour, sumservice, cid, waranty, clientcard);
-        } catch (RuntimeException runtimeException) {
-            System.out.println("Avem erori: " + runtimeException.getMessage());
+            System.out.println("Car added!");
+        } catch (Exception ex) {
+            System.out.println("Errors:\n" + ex.getMessage());
+        }
+    }
+
+    private void handleRemoveTransaction() {
+        try {
+            System.out.print("Enter the id to remove:");
+            String id = scanner.nextLine();
+            transactionservice.Remove(id);
+
+            System.out.println("Transaction removed!");
+        } catch (Exception ex) {
+            System.out.println("Errors:\n" + ex.getMessage());
         }
     }
 }

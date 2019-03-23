@@ -1,13 +1,15 @@
 package Domain;
 
+import java.util.Objects;
+
 public class Transaction {
 
-    private int id, icc, piecesum, date, hour;                                                                  //cid, car id; icc, client id cart
+    private String id, icc, date, hour, cid;                                                                  //cid, car id; icc, client id cart
+    private int piecesum;
     private double sumservice;
     private boolean clientcard, warranty;
-    private String cid;
 
-    public Transaction(int id, int icc, int piecesum, int date, int hour, double sumservice, boolean clientcard, boolean warranty, String cid) {
+    public Transaction(String id, String icc, String date, String hour, String cid, int piecesum, double sumservice, boolean clientcard, boolean warranty) {
 
         this.id = id;
         this.icc = icc;
@@ -20,19 +22,46 @@ public class Transaction {
         this.cid = cid;
     }
 
-    public int getId() {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction transaction = (Transaction) o;
+        return id.equals(transaction.id);
+
+    }
+
+    public int hashCode() {
+        return Objects.hash(id, icc, date, hour, cid, piecesum, sumservice, clientcard, warranty);
+    }
+
+    @Override
+    public String toString() {
+        return "Cake{" +
+                "id='" + id + '\'' +
+                ", icc='" + icc + '\'' +
+                ", date='" + date + '\'' +
+                ", hour=" + hour +
+                ", cid=" + cid +
+                ", piecesum=" + piecesum +
+                ", sumservice=" + sumservice +
+                ", clientcard=" + clientcard +
+                ", warranty=" + warranty +
+                '}';
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getIcc() {
+    public String getIcc() {
         return icc;
     }
 
-    public void setIcc(int icc) {
+    public void setIcc(String icc) {
         this.icc = icc;
     }
 
@@ -52,19 +81,19 @@ public class Transaction {
         this.sumservice = sumservice;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public int getHour() {
+    public String getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(String hour) {
         this.hour = hour;
     }
 

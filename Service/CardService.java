@@ -12,10 +12,15 @@ public class CardService {
         this.repository = repository;
     }
 
-    public void EnterServiceCard(int id, int cnp, int bdate, int rdate, String model, String fname, String lname) {
+    public void AddAndUpdate(String id, String cnp, String bdate, String rdate) {
 
-        Card card = new Card(id, cnp, bdate, rdate, model, fname, lname);
-        List<Card> cards = repository.getAll();
+        Card existing = repository.findById(id);
+        Card card = new Card(id, cnp, bdate, rdate);
+        repository.AddAndUpdate(card);
+    }
+
+    public void Remove(String cnp) {
+        repository.Remove(cnp);
     }
 
     public List<Card> getAll() {

@@ -1,34 +1,58 @@
 package Domain;
 
+import java.util.Objects;
+
 public class Car {
 
-    private int id, date, distance;                             //purchase date of the car and the distance traveled
-    private String model;
-    private boolean waranty;
+    private String id, date, model;                             //purchase date of the car and the distance traveled
+    private int distance;
+    private boolean warranty;
 
-    public Car(int id, int date, int distance, String model, boolean waranty) {
+    public Car(String id, String date, String model, int distance, boolean warranty) {
 
         this.id = id;
         this.date = date;
-        this.distance = distance;
         this.model = model;
-        this.waranty = waranty;
+        this.distance = distance;
+        this.warranty = warranty;
 
     }
 
-    public int getId() {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id.equals(car.id);
+        }
+
+    public String toString() {
+        return "Cake{" +
+                "id='" + id + '\'' +
+                ", date='" + date + '\'' +
+                ", model='" + model+
+                ", distance=" + distance +
+                ", warranty=" + warranty +
+                '}';
+    }
+
+    public int hashCode() {
+        return Objects.hash(id, date, model, distance, warranty);
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -48,11 +72,11 @@ public class Car {
         this.model = model;
     }
 
-    public boolean getWaranty() {
-        return waranty;
+    public boolean getWarranty() {
+        return warranty;
     }
 
-    public void setWaranty(boolean waranty) {
-        this.waranty = waranty;
+    public void setWaranty(boolean warranty) {
+        this.warranty = warranty;
     }
 }

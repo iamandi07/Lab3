@@ -6,17 +6,17 @@ import Repository.TransactionRepository;
 import java.util.*;
 
 public class TransactionService {
+
     private TransactionRepository repository;
 
     public TransactionService(TransactionRepository repository) {
         this.repository = repository;
     }
 
-    public void EnterServiceTransaction(int id, int icc, int piecesum, int date, int hour, double sumservice, boolean clientcard, boolean warranty, String cid) {
+    public void AddAndUpdate(String id, String icc, String date, String hour, String cid, int piecesum, double sumservice, boolean clientcard, boolean warranty) {
 
-        Transaction transaction = new Transaction(id, icc, piecesum, date, hour, sumservice, warranty, clientcard, cid);
         if (clientcard = true){
-            sumservice = sumservice-(sumservice/10);
+            sumservice = 0.1;
         } else if (clientcard = false) {
             sumservice = sumservice;
         }
@@ -24,8 +24,12 @@ public class TransactionService {
             piecesum = 0;
         }
         double sum = sumservice + piecesum;
+        Transaction transaction = new Transaction(id, icc, date, hour, cid, piecesum, sumservice, clientcard, warranty);
 
-        List<Transaction> transactions = repository.getAll();
+        repository.AddAndUpdate(transaction);
+    }
+    public void Remove(String id) {
+        repository.Remove(id);
     }
 
     public List<Transaction> getAll() {

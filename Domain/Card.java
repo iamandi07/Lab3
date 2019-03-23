@@ -2,74 +2,56 @@ package Domain;
 
 public class Card {
 
-    private int id, cnp, bdate, rdate;
-    private String model, fname, lname;
+    private String id, cnp, bdate, rdate;
 
-    public Card(int id, int cnp, int bdate, int rdate, String model, String fname, String lname) {
+    public Card(String id, String cnp, String bdate, String rdate) {
 
         this.id = id;
         this.cnp = cnp;
         this.bdate = bdate;
         this.rdate = rdate;
-        this.model = model;
-        this.fname = fname;
-        this.lname = lname;
 
     }
 
-    public int getId() {
+    public String toString() {
+        return "Card{" +
+                "id='" + id + '\'' +
+                ", cnp='" + cnp + '\'' +
+                ", bdate='" + bdate + '\'' +
+                ", rdate=" + rdate + '}';
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getCnp() {
+    public String getCnp() {
         return cnp;
     }
 
-    public void setCnp(int cnp) {
+    public void setCnp(String cnp) {
         this.cnp = cnp;
     }
 
-    public int getBdate() {
+    public String getBdate() {
         return bdate;
     }
 
-    public void setBdate(int bdate) {
+    public void setBdate(String bdate) {
         this.bdate = bdate;
     }
 
-    public int getRdate() {
+    public String getRdate() {
         return rdate;
     }
 
-    public void setRdate(int rdate) {
+    public void setRdate(String rdate) {
         this.rdate = rdate;
     }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
 }
+
+

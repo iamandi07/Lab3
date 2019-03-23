@@ -1,24 +1,21 @@
 package Domain;
-import java.lang.String;
 
-import static java.lang.Character.isDigit;
+import java.lang.String;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 
 public class CardValidator {
 
-    /**
-     * Validates a car.
-     * @param card the card to validate.
-     * @throws RuntimeException if there are validation errors.
-     */
 
     public void validate(Card card) {
 
-        String number = String.valueOf(card.getCnp());
-        String errors = "";
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
-        if (number.length() != 13) {
+        if (card.getCnp().length() != 13) {
             throw new RuntimeException("The personal number need to contain 13 numbers");
         }
+        String number = card.getCnp();
 
         if (number.charAt(0) < '1' || number.charAt(0) > '8'  ||
                 (number.charAt(1) < '0' || number.charAt(1) > '9' ) ||
@@ -29,12 +26,24 @@ public class CardValidator {
                 (number.charAt(6) < '0' || number.charAt(6) > '9' ) ||
                 (number.charAt(7) < '1' || number.charAt(7) > '5' ) ||
                 (number.charAt(8) < '1' || number.charAt(8) > '9' ) ||
-                (number.charAt(9) < '1' || number.charAt(9) > '9' ) ||
+                (number.charAt(9) < '0' || number.charAt(9) > '9' ) ||
                 (number.charAt(10) < '1' || number.charAt(10) > '9' ) ||
                 (number.charAt(11) < '1' || number.charAt(11) > '9' ) ||
                 (number.charAt(12) < '1' || number.charAt(12) > '9' ))
                  {
             throw new RuntimeException("The CNP is not valid");
+        }
+
+        try {
+            format.parse(card.getBdate());
+        } catch (ParseException pe) {
+            throw new RuntimeException("The birthday format is not good!");
+        }
+
+        try {
+            format.parse(card.getRdate());
+        } catch (ParseException pe) {
+            throw new RuntimeException("The date of registration is not in a correct format!");
         }
     }
 }
